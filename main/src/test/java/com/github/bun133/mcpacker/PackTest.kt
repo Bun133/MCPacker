@@ -2,6 +2,7 @@ package com.github.bun133.mcpacker
 
 import com.github.bun133.mcpacker.defaultPacker.BlockTexturePackerEntry
 import com.github.bun133.mcpacker.defaultPacker.DataPackPackerEntry
+import com.github.bun133.mcpacker.defaultPacker.ItemTexturePackerEntry
 import org.bukkit.Material
 import org.junit.Test
 import java.io.File
@@ -37,7 +38,11 @@ class PackTest {
             listOf(
                 DataPackPackerEntry(description = "Test"),
             ) + Material.values().filter { !it.isLegacy }.map { mat ->
-                BlockTexturePackerEntry(mat, ImageIO.read(assetTopDir.resolve("test.png")))
+                if (mat.isBlock) {
+                    return@map BlockTexturePackerEntry(mat, ImageIO.read(assetTopDir.resolve("test.png")))
+                } else {
+                    return@map ItemTexturePackerEntry(mat, ImageIO.read(assetTopDir.resolve("test.png")))
+                }
             }
         )
     }
