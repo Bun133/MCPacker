@@ -30,6 +30,18 @@ class PackTest {
         )
     }
 
+    @Test
+    fun generateAllTexture() {
+        runTestWithName(
+            "all",
+            listOf(
+                DataPackPackerEntry(description = "Test"),
+            ) + Material.values().filter { !it.isLegacy }.map { mat ->
+                BlockTexturePackerEntry(mat, ImageIO.read(assetTopDir.resolve("test.png")))
+            }
+        )
+    }
+
     private fun runTestWithName(name: String, entries: List<PackEntry<*>>) {
         val targetDir = File(resultTopDir, name)
         if (targetDir.exists()) {
