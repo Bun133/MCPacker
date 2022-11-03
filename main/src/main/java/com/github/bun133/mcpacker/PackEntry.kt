@@ -36,12 +36,12 @@ abstract class PackLocation<out E : PackEntry<E>> {
 }
 
 class InsidePackLocation<E : PackEntry<E>>(
-    private val pathString: String
+    val rawPathString: String
 ) : PackLocation<E>() {
-    override fun pathString(): String = "[DATAPACKROOT]\\$pathString"
+    override fun pathString(): String = "[DATAPACKROOT]\\$rawPathString"
 
     override fun file(packerTargetFolder: File): File {
-        return File(packerTargetFolder, pathString)
+        return File(packerTargetFolder, rawPathString)
     }
 }
 

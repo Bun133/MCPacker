@@ -2,6 +2,7 @@ package com.github.bun133.mcpacker
 
 import com.github.bun133.mcpacker.defaultPacker.BlockTexturePacker
 import com.github.bun133.mcpacker.defaultPacker.DataPackPacker
+import com.github.bun133.mcpacker.defaultPacker.ImagePacker
 import java.io.File
 
 
@@ -88,6 +89,7 @@ class MCPacker {
      */
     private fun initDefaultPacker() {
         registerPacker { DataPackPacker() }
+        registerPacker { ImagePacker() }
         registerPacker { BlockTexturePacker() }
     }
 

@@ -29,7 +29,7 @@ class BlockTexturePacker : DefaultPacker<Boolean>() {
                 ImagePackerEntry(
                     it.img,
                     it.packEntryName(),
-                    packLocation(it.location().pathString())
+                    packLocation(it.location().rawPathString)
                 ), packerTargetFolder
             ).toSuccessResult()
         }
@@ -46,9 +46,9 @@ class BlockTexturePackerEntry(
     private val block: Material,
     internal val img: BufferedImage,
 ) : PackEntry<BlockTexturePackerEntry>() {
-    override fun packEntryName(): String = block.translationKey
+    override fun packEntryName(): String = "[BlockTexture]${block.key.value()}"
     private val loc =
-        packLocation<BlockTexturePackerEntry>("assets/minecraft/textures/block/${block.translationKey}.png")
+        packLocation<BlockTexturePackerEntry>("assets/minecraft/textures/block/${block.key.value()}.png")
 
     override fun location() = loc
 }
