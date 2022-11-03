@@ -1,18 +1,33 @@
 package com.github.bun133.mcpacker
 
+import com.github.bun133.mcpacker.defaultPacker.BlockTexturePackerEntry
 import com.github.bun133.mcpacker.defaultPacker.DataPackPackerEntry
+import org.bukkit.Material
 import org.junit.Test
 import java.io.File
 import java.nio.file.Paths
+import javax.imageio.ImageIO
 
 class PackTest {
     private val testTopDir = Paths.get("./src/test/resources/test").toFile()
     private val resultTopDir = Paths.get("./src/test/resources/test/result").toFile()
     private val expectedTopDir = Paths.get("./src/test/resources/test/expected").toFile()
+    private val assetTopDir = Paths.get("./src/test/resources/test/asset").toFile()
 
     @Test
     fun generateBaseResourcePack() {
         runTestWithName("base", listOf(DataPackPackerEntry(description = "Test")))
+    }
+
+    @Test
+    fun generateBlockTexture() {
+        runTestWithName(
+            "block",
+            listOf(
+                DataPackPackerEntry(description = "Test"),
+                BlockTexturePackerEntry(Material.STONE, ImageIO.read(assetTopDir.resolve("test.png")))
+            )
+        )
     }
 
     private fun runTestWithName(name: String, entries: List<PackEntry<*>>) {
