@@ -36,6 +36,12 @@ class BlockTexturePacker : DefaultPacker<Boolean>() {
     }
 }
 
+/**
+ * ブロックのテクスチャをpackするPackerのEntry
+ *
+ * @param block 対象のブロック
+ * @param img テクスチャ
+ */
 class BlockTexturePackerEntry(
     private val block: Material,
     internal val img: BufferedImage,

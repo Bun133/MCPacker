@@ -41,7 +41,7 @@ class InsidePackLocation<E : PackEntry<E>>(
     override fun pathString(): String = "[DATAPACKROOT]\\$pathString"
 
     override fun file(packerTargetFolder: File): File {
-        return packerTargetFolder.resolve(pathString)
+        return File(packerTargetFolder, pathString)
     }
 }
 
