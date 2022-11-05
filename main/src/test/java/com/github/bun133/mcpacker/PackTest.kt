@@ -8,6 +8,8 @@ import org.junit.Test
 import java.io.File
 import java.nio.file.Paths
 import javax.imageio.ImageIO
+import kotlin.time.ExperimentalTime
+import kotlin.time.measureTime
 
 class PackTest {
     private val testTopDir = Paths.get("./src/test/resources/test").toFile()
@@ -33,26 +35,32 @@ class PackTest {
 
     @Test
     fun generateAllTexture() {
+        val img = ImageIO.read(assetTopDir.resolve("test.png"))
         runTestWithName(
             "all",
             listOf(
                 DataPackPackerEntry(description = "Test"),
             ) + Material.values().filter { !it.isLegacy }.map { mat ->
                 if (mat.isBlock) {
-                    return@map BlockTexturePackerEntry(mat, ImageIO.read(assetTopDir.resolve("test.png")))
+                    return@map BlockTexturePackerEntry(mat, img)
                 } else {
-                    return@map ItemTexturePackerEntry(mat, ImageIO.read(assetTopDir.resolve("test.png")))
+                    return@map ItemTexturePackerEntry(mat, img)
                 }
             }
         )
     }
 
+    @OptIn(ExperimentalTime::class)
     private fun runTestWithName(name: String, entries: List<PackEntry<*>>) {
         val targetDir = File(resultTopDir, name)
         if (targetDir.exists()) {
             targetDir.deleteRecursively()
         }
-        assertAndPack(targetDir, entries)
+        val time = measureTime {
+            assertAndPack(targetDir, entries)
+        }
+
+        println("Test $name took $time")
     }
 
     private fun assertAndPack(targetDir: File, entries: List<PackEntry<*>>): Boolean {
