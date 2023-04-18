@@ -13,7 +13,7 @@ class PackerRegistry {
     /**
      * [entry]をpackできるpackerを返す
      */
-    internal fun getSupportedPacker(entry: PackEntry<*>): List<Packer<*>> {
+    internal fun getSupportedPacker(entry: PackEntry): List<Packer<*>> {
         return packers.filter { it.isSupported(entry) }
     }
 }

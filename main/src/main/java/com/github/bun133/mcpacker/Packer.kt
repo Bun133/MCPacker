@@ -18,7 +18,7 @@ abstract class Packer<R : Any> {
      * @param T 丸投げ先のPackerの型
      */
     internal inline fun <reified T : Packer<R>, R : Any> passPack(
-        packEntry: PackEntry<*>,
+        packEntry: PackEntry,
         packerTargetFolder: File
     ): PackResult<R> {
         return mcPacker.passPack<T, R>(packEntry, packerTargetFolder)
@@ -28,7 +28,7 @@ abstract class Packer<R : Any> {
      * 他のPackerに[packEntry]のpackを丸投げする
      */
     @JvmName("passPack1")
-    internal fun passPack(packEntry: PackEntry<*>, packerTargetFolder: File): PackResult<*> {
+    internal fun passPack(packEntry: PackEntry, packerTargetFolder: File): PackResult<*> {
         return mcPacker.passPack(packEntry, packerTargetFolder)
     }
 
@@ -41,7 +41,7 @@ abstract class Packer<R : Any> {
     /**
      * [entry]をpackできるかどうかを返す
      */
-    abstract fun isSupported(entry: PackEntry<*>): Boolean
+    abstract fun isSupported(entry: PackEntry): Boolean
 
     /**
      * すべて一括でpackする
@@ -50,7 +50,7 @@ abstract class Packer<R : Any> {
      * @return packの成功可否
      */
     internal abstract fun packAll(
-        entries: List<PackEntry<*>>,
+        entries: List<PackEntry>,
         packerTargetFolder: File
     ): List<PackResult<R>>
 }

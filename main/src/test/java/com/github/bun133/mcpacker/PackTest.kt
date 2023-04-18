@@ -51,7 +51,7 @@ class PackTest {
     }
 
     @OptIn(ExperimentalTime::class)
-    private fun runTestWithName(name: String, entries: List<PackEntry<*>>) {
+    private fun runTestWithName(name: String, entries: List<PackEntry>) {
         val targetDir = File(resultTopDir, name)
         if (targetDir.exists()) {
             targetDir.deleteRecursively()
@@ -63,7 +63,7 @@ class PackTest {
         println("Test $name took $time")
     }
 
-    private fun assertAndPack(targetDir: File, entries: List<PackEntry<*>>): Boolean {
+    private fun assertAndPack(targetDir: File, entries: List<PackEntry>): Boolean {
         val b = pack(targetDir, entries)
         assert(b) { "generate Resource Pack" }
         assertSame(targetDir, File(expectedTopDir, targetDir.name))

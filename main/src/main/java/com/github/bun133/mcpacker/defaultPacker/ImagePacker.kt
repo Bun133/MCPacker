@@ -18,11 +18,11 @@ class ImagePacker : DefaultPacker<Boolean>() {
         // 何もしない
     }
 
-    override fun isSupported(entry: PackEntry<*>): Boolean {
+    override fun isSupported(entry: PackEntry): Boolean {
         return entry is ImagePackerEntry
     }
 
-    override fun packAll(entries: List<PackEntry<*>>, packerTargetFolder: File): List<PackResult<Boolean>> {
+    override fun packAll(entries: List<PackEntry>, packerTargetFolder: File): List<PackResult<Boolean>> {
         val imageEntries = entries.filterIsInstance<ImagePackerEntry>()
         return imageEntries.map { en ->
             val packerTarget = en.location().file(packerTargetFolder)
@@ -47,10 +47,10 @@ class ImagePacker : DefaultPacker<Boolean>() {
 open class ImagePackerEntry(
     val img: BufferedImage,
     private val name: String,
-    private val loc: PackLocation<ImagePackerEntry>,
+    private val loc: PackLocation,
     val formatString: String = "png"
 ) :
-    PackEntry<ImagePackerEntry>() {
+    PackEntry() {
     override fun packEntryName(): String = name
     override fun location() = loc
 }

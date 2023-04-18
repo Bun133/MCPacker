@@ -5,7 +5,7 @@ import java.io.File
 /**
  * packするファイルの情報を保持するクラス
  */
-abstract class PackEntry<out E : PackEntry<E>> {
+abstract class PackEntry {
     /**
      * packするファイルの名前
      *
@@ -16,13 +16,13 @@ abstract class PackEntry<out E : PackEntry<E>> {
     /**
      * pack先の場所の名前
      */
-    abstract fun location(): PackLocation<E>
+    abstract fun location(): PackLocation
 }
 
 /**
  * packするファイルの場所を保持するクラス
  */
-abstract class PackLocation<out E : PackEntry<E>> {
+abstract class PackLocation {
     /**
      * packするファイルの場所をStringで返す
      */
@@ -35,9 +35,9 @@ abstract class PackLocation<out E : PackEntry<E>> {
     abstract fun file(packerTargetFolder: File): File
 }
 
-class InsidePackLocation<E : PackEntry<E>>(
+class InsidePackLocation(
     val rawPathString: String
-) : PackLocation<E>() {
+) : PackLocation() {
     override fun pathString(): String = "[DATAPACKROOT]\\$rawPathString"
 
     override fun file(packerTargetFolder: File): File {
@@ -48,6 +48,6 @@ class InsidePackLocation<E : PackEntry<E>>(
 /**
  * Packのroot以下のパス文字列からPackLocationを生成する
  */
-fun <E : PackEntry<E>> packLocation(pathString: String): InsidePackLocation<E> {
+fun packLocation(pathString: String): InsidePackLocation {
     return InsidePackLocation(pathString)
 }

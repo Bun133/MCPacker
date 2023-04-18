@@ -8,7 +8,7 @@ import java.io.File
 
 
 class MCPacker {
-    private val entries: MutableList<PackEntry<*>> = mutableListOf()
+    private val entries: MutableList<PackEntry> = mutableListOf()
     private val packerRegistry = PackerRegistry()
     private var isInited = false
 
@@ -21,7 +21,7 @@ class MCPacker {
     /**
      * packするファイルを追加する
      */
-    fun addPackEntry(entry: PackEntry<*>) {
+    fun addPackEntry(entry: PackEntry) {
         entries.add(entry)
     }
 
@@ -58,8 +58,8 @@ class MCPacker {
         return isSuccess
     }
 
-    private fun actualGenerate(packerTargetFolder: File): MutableMap<PackEntry<*>, PackResult<*>> {
-        val packerResults = mutableMapOf<PackEntry<*>, PackResult<*>>()
+    private fun actualGenerate(packerTargetFolder: File): MutableMap<PackEntry, PackResult<*>> {
+        val packerResults = mutableMapOf<PackEntry, PackResult<*>>()
 
         val entryToPacker = entries
             .map { it to packerRegistry.getSupportedPacker(it).firstOrNull() } // TODO: ここで複数のPackerがあった場合の処理
@@ -101,7 +101,7 @@ class MCPacker {
      * @param T 他のPackerの型
      */
     internal inline fun <reified T : Packer<R>, R : Any> passPack(
-        entry: PackEntry<*>,
+        entry: PackEntry,
         packerTargetFolder: File
     ): PackResult<R> {
         val packer = packerRegistry.getSupportedPacker(entry).filterIsInstance<T>().firstOrNull()
@@ -115,7 +115,7 @@ class MCPacker {
      * 他のPackerが処理しているエントリを他のPackerに丸投げするためのfunction
      */
     @JvmName("passPack1")
-    internal fun passPack(entry: PackEntry<*>, packerTargetFolder: File): PackResult<*> {
+    internal fun passPack(entry: PackEntry, packerTargetFolder: File): PackResult<*> {
         val packer = packerRegistry.getSupportedPacker(entry).firstOrNull()
         return packer?.packAll(listOf(entry), packerTargetFolder)?.first() ?: PackResult(
             null,
@@ -129,7 +129,7 @@ class MCPacker {
  * @param packerTargetFolder pack先のフォルダ
  * @return packの成功可否
  */
-fun pack(packerTargetFolder: File, entries: List<PackEntry<*>>): Boolean {
+fun pack(packerTargetFolder: File, entries: List<PackEntry>): Boolean {
     val mcpacker = MCPacker()
     entries.forEach { mcpacker.addPackEntry(it) }
     return mcpacker.generate(packerTargetFolder)

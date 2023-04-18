@@ -18,14 +18,14 @@ class BlockTexturePacker : DefaultPacker<Boolean>() {
         // 何もしない
     }
 
-    override fun isSupported(entry: PackEntry<*>): Boolean {
+    override fun isSupported(entry: PackEntry): Boolean {
         return entry is BlockTexturePackerEntry
     }
 
-    override fun packAll(entries: List<PackEntry<*>>, packerTargetFolder: File): List<PackResult<Boolean>> {
+    override fun packAll(entries: List<PackEntry>, packerTargetFolder: File): List<PackResult<Boolean>> {
         val entryList = entries.filterIsInstance<BlockTexturePackerEntry>()
         return entryList.map {
-            passPack<ImagePacker, Boolean>(
+            passPack(
                 ImagePackerEntry(
                     it.img,
                     it.packEntryName(),
@@ -45,10 +45,10 @@ class BlockTexturePacker : DefaultPacker<Boolean>() {
 class BlockTexturePackerEntry(
     private val block: Material,
     internal val img: BufferedImage,
-) : PackEntry<BlockTexturePackerEntry>() {
+) : PackEntry() {
     override fun packEntryName(): String = "[BlockTexture]${block.key.value()}"
     private val loc =
-        packLocation<BlockTexturePackerEntry>("assets/minecraft/textures/block/${block.key.value()}.png")
+        packLocation("assets/minecraft/textures/block/${block.key.value()}.png")
 
     override fun location() = loc
 }
